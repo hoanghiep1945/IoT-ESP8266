@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+      IoT Monitor · Dashboard
+    </title>
+    <link rel="stylesheet" href="screen.css">
+    <script src="js/storage.js" defer></script>
+    <script src="js/chart.js" defer></script>
+    <script src="js/devices.js" defer></script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="index.html">
+        <img src="assets/9eb65.svg" alt="">
+        <span>
+          SENSOR MONITOR
+          <small>
+            IoT Dashboard
+          </small>
+        </span>
+      </a>
+      <nav aria-label="Điều hướng chính">
+        <a href="index.html" class="active" aria-current="page">
+          <img src="assets/beb46.svg" alt="">
+          Dashboard
+        </a>
+        <a href="datasensor.html">
+          <img src="assets/beb46.svg" alt="">
+          Data Sensor
+        </a>
+        <a href="action-history.html">
+          <img src="assets/beb46.svg" alt="">
+          Action History
+        </a>
+        <a href="profile.html">
+          <img src="assets/beb46.svg" alt="">
+          Profile
+        </a>
+      </nav>
+      <div class="sidebar-bottom">
+        <a href="profile.html" class="side-account">
+          <span class="side-avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <circle cx="12" cy="8" r="3.5"></circle>
+              <path d="M5 21v-2a7 7 0 0 1 14 0v2"></path>
+            </svg>
+          </span>
+          <strong>Lê Bá Hoàng Hiệp</strong>
+        </a>
+        <a href="login.html" class="logout-button">Đăng xuất</a>
+      </div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <div>
+          <h1>
+            Dashboard
+          </h1>
+          <p>
+            Theo dõi ánh sáng, nhiệt độ, độ ẩm và các thiết bị LED
+          </p>
+        </div>
+        <div class="topbar-right">
+          <span class="badge sample">
+            Dữ liệu mẫu
+          </span>
+          <a href="profile.html" class="user-link">
+            <span class="avatar">
+              HH
+            </span>
+            <span>
+              Hoàng Hiệp
+              <small>
+                Student
+              </small>
+            </span>
+          </a>
+        </div>
+      </header>
+      <main data-page="index">
+        <section class="dashboard">
+          <div class="metrics">
+            <article class="metric">
+              <div class="metric-heading">
+                <img src="assets/3e376.svg" alt="">
+                <p>
+                  Nhiệt độ
+                </p>
+              </div>
+              <div class="metric-value">
+                28.5
+                <small>
+                  °C
+                </small>
+              </div>
+              <p class="metric-note">
+                Trong ngưỡng cho phép
+              </p>
+            </article>
+            <article class="metric">
+              <div class="metric-heading">
+                <img src="assets/52009.svg" alt="">
+                <p>
+                  Độ ẩm
+                </p>
+              </div>
+              <div class="metric-value">
+                72
+                <small>
+                  %
+                </small>
+              </div>
+              <p class="metric-note">
+                Ổn định trong ngưỡng
+              </p>
+            </article>
+            <article class="metric">
+              <div class="metric-heading">
+                <img src="assets/57c88.svg" alt="">
+                <p>
+                  Ánh sáng
+                </p>
+              </div>
+              <div class="metric-value">
+                680
+                <small>
+                  Lux
+                </small>
+              </div>
+              <p class="metric-note">
+                Mức sáng tốt
+              </p>
+            </article>
+          </div>
+          <div class="dashboard-grid">
+            <section class="panel chart-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>
+                    Biểu đồ cảm biến
+                  </h2>
+                  <p>
+                    Ánh sáng · Nhiệt độ · Độ ẩm
+                  </p>
+                </div>
+                <span class="muted">
+                  09:00 – 09:15
+                </span>
+              </div>
+              <div class="chart-wrap">
+                <svg viewBox="0 0 790 300" role="img" aria-labelledby="chart-title chart-description">
+                  <title id="chart-title">
+                    Biểu đồ ánh sáng, nhiệt độ và độ ẩm
+                  </title>
+                  <desc id="chart-description">Nhiệt độ và độ ẩm ở thang bên trái; ánh sáng Lux ở thang bên phải.</desc>
+                  <g class="grid-lines">
+                    <line x1="75" y1="50" x2="705" y2="50" />
+                    <line x1="75" y1="100" x2="705" y2="100" />
+                    <line x1="75" y1="150" x2="705" y2="150" />
+                    <line x1="75" y1="200" x2="705" y2="200" />
+                    <line x1="75" y1="250" x2="705" y2="250" />
+                  </g>
+                  <g class="vertical-grid" aria-hidden="true">
+                    <line x1="75" y1="50" x2="75" y2="250" />
+                    <line x1="201" y1="50" x2="201" y2="250" />
+                    <line x1="327" y1="50" x2="327" y2="250" />
+                    <line x1="453" y1="50" x2="453" y2="250" />
+                    <line x1="579" y1="50" x2="579" y2="250" />
+                    <line x1="705" y1="50" x2="705" y2="250" />
+                  </g>
+                  <g class="chart-axes" aria-hidden="true">
+                    <line class="axis-y-left" x1="75" y1="50" x2="75" y2="250" />
+                    <line class="axis-y-right" x1="705" y1="50" x2="705" y2="250" />
+                    <line class="axis-x" x1="75" y1="250" x2="705" y2="250" />
+                  </g>
+                  <g class="axis-ticks" aria-hidden="true">
+                    <line x1="75" y1="50" x2="69" y2="50" />
+                    <line x1="75" y1="100" x2="69" y2="100" />
+                    <line x1="75" y1="150" x2="69" y2="150" />
+                    <line x1="75" y1="200" x2="69" y2="200" />
+                    <line x1="75" y1="250" x2="69" y2="250" />
+                    <line x1="705" y1="50" x2="711" y2="50" />
+                    <line x1="705" y1="100" x2="711" y2="100" />
+                    <line x1="705" y1="150" x2="711" y2="150" />
+                    <line x1="705" y1="200" x2="711" y2="200" />
+                    <line x1="705" y1="250" x2="711" y2="250" />
+                  </g>
+                  <g class="axis-labels">
+                    <text class="humidity-scale" x="60" y="55" text-anchor="end" fill="#0891b2">100</text>
+                    <text class="humidity-scale" x="60" y="105" text-anchor="end" fill="#0891b2">75</text>
+                    <text class="humidity-scale" x="60" y="155" text-anchor="end" fill="#0891b2">50</text>
+                    <text class="humidity-scale" x="60" y="205" text-anchor="end" fill="#0891b2">25</text>
+                    <text class="humidity-scale" x="60" y="255" text-anchor="end" fill="#0891b2">0</text>
+                    <text class="temperature-scale" x="28" y="55" text-anchor="end" fill="#ef4444">50</text>
+                    <text class="temperature-scale" x="28" y="105" text-anchor="end" fill="#ef4444">37.5</text>
+                    <text class="temperature-scale" x="28" y="155" text-anchor="end" fill="#ef4444">25</text>
+                    <text class="temperature-scale" x="28" y="205" text-anchor="end" fill="#ef4444">12.5</text>
+                    <text class="temperature-scale" x="28" y="255" text-anchor="end" fill="#ef4444">0</text>
+                    <text class="time-label" x="75" y="282" text-anchor="middle">09:00</text>
+                    <text class="time-label" x="201" y="282" text-anchor="middle">09:03</text>
+                    <text class="time-label" x="327" y="282" text-anchor="middle">09:06</text>
+                    <text class="time-label" x="453" y="282" text-anchor="middle">09:09</text>
+                    <text class="time-label" x="579" y="282" text-anchor="middle">09:12</text>
+                    <text class="time-label" x="705" y="282" text-anchor="middle">09:15</text>
+                    <text class="light-scale" x="717" y="55" text-anchor="start" fill="#b77900">1000</text>
+                    <text class="light-scale" x="717" y="105" text-anchor="start" fill="#b77900">750</text>
+                    <text class="light-scale" x="717" y="155" text-anchor="start" fill="#b77900">500</text>
+                    <text class="light-scale" x="717" y="205" text-anchor="start" fill="#b77900">250</text>
+                    <text class="light-scale" x="717" y="255" text-anchor="start" fill="#b77900">0</text>
+                    <text class="humidity-unit" x="60" y="20" text-anchor="end" fill="#0891b2">%</text>
+                    <text class="temperature-unit" x="28" y="20" text-anchor="end" fill="#ef4444">°C</text>
+                    <text class="light-unit" x="717" y="20" text-anchor="start" fill="#b77900">Lux</text>
+                  </g>
+                  <path class="chart-line temperature" stroke="#ef4444" data-values="27,27.2,27.7,28,28.3,28.5,28.7,29,29.1,29.2,29,28.8,28.6,28.5,28.4,28.5" d="M 75,142.00 C 89.00,141.73 103.00,141.58 117,141.20 C 131.00,140.82 145.00,139.70 159,139.20 C 173.00,138.70 187.00,138.40 201,138.00 C 215.00,137.60 229.00,137.12 243,136.80 C 257.00,136.48 271.00,136.27 285,136.00 C 299.00,135.73 313.00,135.52 327,135.20 C 341.00,134.88 355.00,134.20 369,134.00 C 383.00,133.80 397.00,133.73 411,133.60 C 425.00,133.47 439.00,133.20 453,133.20 C 467.00,133.20 481.00,133.73 495,134.00 C 509.00,134.27 523.00,134.53 537,134.80 C 551.00,135.07 565.00,135.42 579,135.60 C 593.00,135.78 607.00,135.87 621,136.00 C 635.00,136.13 649.00,136.40 663,136.40 C 677.00,136.40 691.00,136.13 705,136.00" />
+                  <path class="chart-line humidity" stroke="#0891b2" data-values="78,77.5,77,76.5,76,75,74,73,72,71.5,72,72.5,73,73,72.5,72" d="M 75,94.00 C 89.00,94.33 103.00,94.67 117,95.00 C 131.00,95.33 145.00,95.67 159,96.00 C 173.00,96.33 187.00,96.67 201,97.00 C 215.00,97.33 229.00,97.56 243,98.00 C 257.00,98.44 271.00,99.33 285,100.00 C 299.00,100.67 313.00,101.33 327,102.00 C 341.00,102.67 355.00,103.33 369,104.00 C 383.00,104.67 397.00,105.56 411,106.00 C 425.00,106.44 439.00,107.00 453,107.00 C 467.00,107.00 481.00,106.33 495,106.00 C 509.00,105.67 523.00,105.33 537,105.00 C 551.00,104.67 565.00,104.00 579,104.00 C 593.00,104.00 607.00,104.00 621,104.00 C 635.00,104.00 649.00,104.67 663,105.00 C 677.00,105.33 691.00,105.67 705,106.00" />
+                  <path class="chart-line light" stroke="#e3a008" data-values="360,420,480,570,660,750,800,790,740,680,610,550,530,580,630,680" d="M 75,179.62 C 89.00,175.71 103.00,171.80 117,167.89 C 131.00,163.98 145.00,160.85 159,156.16 C 173.00,151.47 187.00,144.43 201,138.56 C 215.00,132.70 229.00,126.83 243,120.97 C 257.00,115.10 271.00,107.56 285,103.37 C 299.00,99.18 313.00,93.60 327,93.60 C 341.00,93.60 355.00,94.47 369,95.55 C 383.00,96.64 397.00,101.77 411,105.33 C 425.00,108.88 439.00,112.85 453,117.06 C 467.00,121.27 481.00,126.53 495,130.74 C 509.00,134.95 523.00,140.52 537,142.47 C 551.00,144.43 565.00,146.38 579,146.38 C 593.00,146.38 607.00,139.87 621,136.61 C 635.00,133.35 649.00,130.09 663,126.83 C 677.00,123.57 691.00,120.32 705,117.06" />
+                </svg>
+              </div>
+              <div class="chart-legend">
+                <span class="temperature">
+                  ● Nhiệt độ (°C)
+                </span>
+                <span class="humidity">
+                  ● Độ ẩm (%)
+                </span>
+                <span class="light">
+                  ● Ánh sáng (Lux)
+                </span>
+              </div>
+              <p class="hint">
+                Mỗi đường dùng thang đo riêng có màu tương ứng.
+              </p>
+            </section>
+            <section class="panel devices">
+              <div class="panel-heading">
+                <div>
+                  <h2>
+                    Thiết bị
+                  </h2>
+                  <p>
+                    3 thiết bị LED
+                  </p>
+                </div>
+              </div>
+              <div class="device">
+                <div>
+                  <h3>
+                    led1
+                  </h3>
+                  <p>
+                    Chân D1
+                  </p>
+                </div>
+                <label class="device-control">
+                  <input type="checkbox" aria-label="Bật hoặc tắt led1" checked>
+                  <span class="switch-track" aria-hidden="true">
+                  </span>
+                  <span class="device-state">
+                  </span>
+                </label>
+              </div>
+              <div class="device">
+                <div>
+                  <h3>
+                    led2
+                  </h3>
+                  <p>
+                    Chân D2
+                  </p>
+                </div>
+                <label class="device-control">
+                  <input type="checkbox" aria-label="Bật hoặc tắt led2" >
+                  <span class="switch-track" aria-hidden="true">
+                  </span>
+                  <span class="device-state">
+                  </span>
+                </label>
+              </div>
+              <div class="device">
+                <div>
+                  <h3>
+                    led3
+                  </h3>
+                  <p>
+                    Chân D6
+                  </p>
+                </div>
+                <label class="device-control">
+                  <input type="checkbox" aria-label="Bật hoặc tắt led3" checked>
+                  <span class="switch-track" aria-hidden="true">
+                  </span>
+                  <span class="device-state">
+                  </span>
+                </label>
+              </div>
+              <p class="hint">
+                Thao tác được lưu vào Action History của bản mô phỏng.
+              </p>
+            </section>
+          </div>
+          <section class="panel recent-alerts" aria-label="Cảnh báo">
+            <h2>Cảnh báo</h2>
+            <div class="alert-row" title="Nhiệt độ đạt 35.2 °C">
+              <img src="assets/35112.svg" alt="">
+              <h3>Nhiệt độ cao</h3><time>08:58</time>
+            </div>
+            <div class="alert-row" title="Thiết bị offline trong 18 giây">
+              <img src="assets/d8d56.svg" alt="">
+              <h3>Mất kết nối</h3><time>08:00</time>
+            </div>
+            <div class="alert-row" title="Ánh sáng giảm dưới 120 Lux">
+              <img src="assets/9028a.svg" alt="">
+              <h3>Ánh sáng thấp</h3><time>07:30</time>
+            </div>
+          </section>
+        </section>
+      </main>
+      <footer>
+        <span>
+          Sensor Monitor · Dữ liệu mô phỏng
+        </span>
+        <span>
+          Dữ liệu minh họa · 14/10/2026
+        </span>
+      </footer>
+    </div>
+  </body>
+</html>

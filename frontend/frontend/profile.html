@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+      IoT Monitor · Profile
+    </title>
+    <link rel="stylesheet" href="screen.css">
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="index.html">
+        <img src="assets/9eb65.svg" alt="">
+        <span>
+          SENSOR MONITOR
+          <small>
+            IoT Dashboard
+          </small>
+        </span>
+      </a>
+      <nav aria-label="Điều hướng chính">
+        <a href="index.html">
+          <img src="assets/beb46.svg" alt="">
+          Dashboard
+        </a>
+        <a href="datasensor.html">
+          <img src="assets/beb46.svg" alt="">
+          Data Sensor
+        </a>
+        <a href="action-history.html">
+          <img src="assets/beb46.svg" alt="">
+          Action History
+        </a>
+        <a href="profile.html" class="active" aria-current="page">
+          <img src="assets/beb46.svg" alt="">
+          Profile
+        </a>
+      </nav>
+      <div class="sidebar-bottom">
+        <a href="profile.html" class="side-account">
+          <span class="side-avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <circle cx="12" cy="8" r="3.5"></circle>
+              <path d="M5 21v-2a7 7 0 0 1 14 0v2"></path>
+            </svg>
+          </span>
+          <strong>Lê Bá Hoàng Hiệp</strong>
+        </a>
+        <a href="login.html" class="logout-button">Đăng xuất</a>
+      </div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <div>
+          <h1>
+            Profile
+          </h1>
+          <p>
+            Thông tin đề tài và tài liệu liên quan
+          </p>
+        </div>
+        <div class="topbar-right">
+          <span class="badge sample">
+            Dữ liệu mẫu
+          </span>
+          <a href="profile.html" class="user-link">
+            <span class="avatar">
+              HH
+            </span>
+            <span>
+              Hoàng Hiệp
+              <small>
+                Student
+              </small>
+            </span>
+          </a>
+        </div>
+      </header>
+      <main>
+        <div class="profile-grid">
+          <section class="panel">
+            <h2>
+              Hệ thống đo cảm biến và điều khiển LED sử dụng MQTT
+            </h2>
+            <p class="profile-description">
+              ESP8266 thu thập nhiệt độ, độ ẩm và ánh sáng. Hệ thống dự kiến gửi dữ liệu qua Mosquitto Broker, lưu vào cơ sở dữ liệu và quản lý các thiết bị led1, led2, led3.
+            </p>
+            <div class="tags">
+              <span>
+                HTML
+              </span>
+              <span>
+                CSS
+              </span>
+              <span>
+                ESP8266
+              </span>
+              <span>
+                DHT11
+              </span>
+              <span>
+                MQTT
+              </span>
+            </div>
+            <p class="hint">
+              Phiên bản hiện tại dùng dữ liệu mô phỏng.
+            </p>
+          </section>
+          <section class="panel">
+            <h2>
+              Thông tin người dùng
+            </h2>
+            <dl>
+              <dt>
+                Họ tên
+              </dt>
+              <dd>
+                Lê Bá Hoàng Hiệp
+              </dd>
+              <dt>
+                Mã sinh viên
+              </dt>
+              <dd>
+                B23DCAT097
+              </dd>
+              <dt>
+                Email
+              </dt>
+              <dd>
+                Chưa cung cấp
+              </dd>
+              <dt>
+                Vai trò
+              </dt>
+              <dd>
+                Sinh viên
+              </dd>
+            </dl>
+          </section>
+          <section class="panel">
+            <h2>
+              Tổng quan hệ thống
+            </h2>
+            <dl>
+              <dt>
+                Node IoT
+              </dt>
+              <dd>
+                1 ESP8266
+              </dd>
+              <dt>
+                Cảm biến
+              </dt>
+              <dd>
+                Nhiệt độ · Độ ẩm · Ánh sáng
+              </dd>
+              <dt>
+                Thiết bị
+              </dt>
+              <dd>
+                led1 · led2 · led3
+              </dd>
+              <dt>
+                Môn học
+              </dt>
+              <dd>
+                IoT và ứng dụng
+              </dd>
+            </dl>
+          </section>
+          <section class="panel">
+            <h2>
+              Tài liệu đề tài
+            </h2>
+            <div class="resource-links">
+              <a href="https://github.com/" target="_blank" rel="noopener noreferrer"><span>Mã nguồn GitHub <small>Demo</small></span><span aria-hidden="true">↗</span></a>
+              <a href="https://www.figma.com/design/obkYJQvHKtJVWpoeN7dmBM/IoT-Sensor-Monitoring---FE-Design?node-id=0-1" target="_blank" rel="noopener noreferrer"><span>Bản thiết kế Figma</span><span aria-hidden="true">↗</span></a>
+              <a href="api-docs.html" target="_blank" rel="noopener noreferrer"><span>Tài liệu API Docs <small>Demo</small></span><span aria-hidden="true">↗</span></a>
+              <a href="assets/bao-cao-demo.pdf" target="_blank" rel="noopener noreferrer"><span>File báo cáo PDF <small>Demo</small></span><span aria-hidden="true">↗</span></a>
+            </div>
+          </section>
+        </div>
+      </main>
+      <footer>
+        <span>
+          Sensor Monitor · Dữ liệu mô phỏng
+        </span>
+        <span>
+          Dữ liệu minh họa · 14/10/2026
+        </span>
+      </footer>
+    </div>
+  </body>
+</html>

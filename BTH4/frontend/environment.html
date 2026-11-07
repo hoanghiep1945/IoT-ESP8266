@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+      IoT Monitor · Environment
+    </title>
+    <link rel="stylesheet" href="css/screen.css?v=20261105-2">
+    <script src="js/virtual-sensors.js" defer></script>
+    <style>
+      /* Khóa toàn bộ màn hình chuẩn 100vh, tuyệt đối không xuất hiện scroll-y */
+      html, body {
+        height: 100vh;
+        overflow: hidden;
+      }
+      .workspace {
+        height: 100vh;
+        display: grid;
+        grid-template-rows: 68px minmax(0, 1fr) 22px;
+      }
+      .environment-container {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 10px;
+        padding: 8px 20px 8px;
+        height: 100%;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      /* 1. HÀNG 3 BOX THÔNG SỐ */
+      .env-boxes-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      .virtual-box {
+        background: white;
+        border: 1.5px solid var(--border);
+        border-radius: 9px;
+        padding: 10px 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: 0 2px 6px rgba(16, 42, 67, 0.03);
+        min-height: 90px;
+      }
+      .virtual-box .box-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .virtual-box h3 {
+        font-size: 15px;
+        font-weight: 700;
+        color: #102a43;
+        margin: 0;
+      }
+      .virtual-box .box-tag {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: #f1f5f9;
+        color: #64748b;
+      }
+      .virtual-box .box-mid {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin: 4px 0;
+      }
+      .virtual-box .box-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: #102a43;
+        line-height: 1;
+      }
+      .virtual-box .box-value small {
+        font-size: 13px;
+        font-weight: 500;
+        color: #64748b;
+        margin-left: 4px;
+      }
+      .virtual-box .box-threshold {
+        font-size: 11px;
+        font-weight: 600;
+        color: #b91c1c;
+        background: #fef2f2;
+        border: 1px dashed #f87171;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      .virtual-box .box-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 6px;
+        font-size: 11px;
+      }
+
+      /* 2. HÀNG 3 BIỂU ĐỒ NẰM Ở GIỮA TRÊN CÙNG 1 DÒNG */
+      .env-charts-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        min-height: 0;
+        height: 100%;
+      }
+      .env-chart-card {
+        background: white;
+        border: 1.5px solid var(--border);
+        border-radius: 9px;
+        padding: 8px 12px;
+        box-shadow: 0 2px 6px rgba(16, 42, 67, 0.03);
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        height: 100%;
+      }
+      .env-chart-card .card-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 4px;
+        flex-shrink: 0;
+      }
+      .env-chart-card h2 {
+        font-size: 12px;
+        font-weight: 700;
+        margin: 0;
+      }
+      .env-chart-card .card-tag {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 1px 6px;
+        border-radius: 4px;
+      }
+      .env-chart-wrap {
+        flex: 1;
+        min-height: 0;
+        position: relative;
+        width: 100%;
+      }
+      .env-chart-wrap svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      /* 3. KHỐI HIỂN THỊ DỮ LIỆU LED ĐANG VƯỢT NGƯỠNG VÀ SÁNG (ĐƯA XUỐNG DƯỚI CÙNG) */
+      .led-status-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        background: white;
+        border: 1.5px solid var(--border);
+        border-radius: 9px;
+        padding: 7px 14px;
+        box-shadow: 0 2px 6px rgba(16, 42, 67, 0.03);
+      }
+      .led-card {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 10px;
+        border-radius: 6px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
+      }
+      .led-bulb {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: #94a3b8;
+        box-shadow: none;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+      }
+      .led-info {
+        font-size: 11px;
+        line-height: 1.3;
+      }
+      .led-info strong {
+        display: block;
+        font-size: 11px;
+        color: #1e293b;
+      }
+      .led-info span {
+        color: #64748b;
+        font-size: 10px;
+        font-weight: 600;
+      }
+
+      /* Trạng thái LED khi vượt ngưỡng và sáng nhấp nháy */
+      @keyframes bulbGlow {
+        0%, 100% {
+          background-color: #ef4444;
+          box-shadow: 0 0 10px #ef4444, 0 0 18px #f87171;
+          transform: scale(1.15);
+        }
+        50% {
+          background-color: #7f1d1d;
+          box-shadow: none;
+          transform: scale(1);
+        }
+      }
+      .led-card.led-active {
+        background: #fef2f2;
+        border-color: #f87171;
+      }
+      .led-card.led-active .led-bulb {
+        animation: bulbGlow 0.6s infinite ease-in-out;
+      }
+      .led-card.led-active .led-info strong {
+        color: #b91c1c;
+      }
+      .led-card.led-active .led-info span {
+        color: #dc2626;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="index.html">
+        <img src="assets/9eb65.svg" alt="">
+        <span>
+          SENSOR MONITOR
+          <small>
+            IoT Dashboard
+          </small>
+        </span>
+      </a>
+      <nav aria-label="Điều hướng chính">
+        <a href="index.html">
+          <img src="assets/beb46.svg" alt="">
+          Dashboard
+        </a>
+        <a href="warning.html" class="active" aria-current="page">
+          <img src="assets/beb46.svg" alt="">
+          Warning
+        </a>
+        <a href="datasensor.html">
+          <img src="assets/beb46.svg" alt="">
+          Data Sensor
+        </a>
+        <a href="action-history.html">
+          <img src="assets/beb46.svg" alt="">
+          Action History
+        </a>
+        <a href="profile.html">
+          <img src="assets/beb46.svg" alt="">
+          Profile
+        </a>
+      </nav>
+      <div class="sidebar-bottom">
+        <a href="profile.html" class="side-account">
+          <span class="side-avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <circle cx="12" cy="8" r="3.5"></circle>
+              <path d="M5 21v-2a7 7 0 0 1 14 0v2"></path>
+            </svg>
+          </span>
+          <strong>Lê Bá Hoàng Hiệp</strong>
+        </a>
+        <a href="/api/auth/logout" class="logout-button">Đăng xuất</a>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div>
+          <h1>
+            Environment Monitoring
+          </h1>
+          <p>
+            Giám sát thời gian thực Độ mặn, Chất lượng không khí (AQI) và Áp suất khí quyển
+          </p>
+        </div>
+        <div class="topbar-right">
+          <span class="badge sample" id="connection-status">
+            Đang kết nối
+          </span>
+          <a href="profile.html" class="user-link">
+            <span class="avatar" data-auth-initials>
+              HH
+            </span>
+            <span>
+              Hoàng Hiệp
+              <small>
+                Student
+              </small>
+            </span>
+          </a>
+        </div>
+      </header>
+
+      <main class="environment-container" data-page="environment">
+        <!-- 1. HÀNG 3 BOX THÔNG SỐ (THAY TÊN BẰNG ĐỘ MẶN, AQI, ÁP SUẤT) -->
+        <div class="env-boxes-row">
+          <!-- BOX 1: ĐỘ MẶN (CHỈ HIỂN THỊ CHỈ SỐ) -->
+          <article class="virtual-box" id="box-cb1">
+            <div class="box-header">
+              <h3>CB1</h3>
+              <span class="box-tag">Range: 0 - 11</span>
+            </div>
+            <div class="box-mid">
+              <div class="box-value"><span id="val-cb1">--</span></div>
+              <div class="box-threshold">Threshold: &gt; 5.5</div>
+            </div>
+            <div class="box-footer">
+              <span>Trạng thái:</span>
+              <span class="status-pill safe" id="status-cb1">OFF</span>
+            </div>
+          </article>
+
+          <!-- BOX 2: CHẤT LƯỢNG KHÔNG KHÍ -->
+          <article class="virtual-box" id="box-cb2">
+            <div class="box-header">
+              <h3>CB2</h3>
+              <span class="box-tag">Range: 0 - 101</span>
+            </div>
+            <div class="box-mid">
+              <div class="box-value"><span id="val-cb2">--</span></div>
+              <div class="box-threshold">Threshold: &gt; 50.5</div>
+            </div>
+            <div class="box-footer">
+              <span>Trạng thái:</span>
+              <span class="status-pill safe" id="status-cb2">OFF</span>
+            </div>
+          </article>
+
+          <!-- BOX 3: ÁP SUẤT KHÍ QUYỂN (CẢNH BÁO SÁNG ĐÈN KHI VƯỢT 50%) -->
+          <article class="virtual-box" id="box-cb3">
+            <div class="box-header">
+              <h3>CB3</h3>
+              <span class="box-tag">Range: 0 - 1001</span>
+            </div>
+            <div class="box-mid">
+              <div class="box-value"><span id="val-cb3">--</span></div>
+              <div class="box-threshold">Threshold: &gt; 500.5</div>
+            </div>
+            <div class="box-footer">
+              <span>Trạng thái:</span>
+              <span class="status-pill safe" id="status-cb3">OFF</span>
+            </div>
+          </article>
+        </div>
+
+        <!-- 2. HÀNG 3 BIỂU ĐỒ NẰM Ở GIỮA TRÊN CÙNG 1 DÒNG (RỘNG RÃI & SẮC NÉT) -->
+        <div class="env-charts-row">
+          <!-- BIỂU ĐỒ 1: ĐỘ MẶN -->
+          <section class="env-chart-card">
+            <div class="card-head">
+              <h2 style="color: #dc2626;">Bi&#7875;u &#273;&#7891; CB1 (0 - 11)</h2>
+              <span class="card-tag" style="background: #fee2e2; color: #dc2626;">0 - 11</span>
+            </div>
+            <div class="env-chart-wrap">
+              <svg class="chart-svg-cb1" viewBox="0 0 500 220" role="img" aria-label="Chart CB1">
+                <g class="grid-lines" stroke="#e2e8f0" stroke-width="1.2">
+                  <line x1="60" y1="25" x2="475" y2="25" />
+                  <line x1="60" y1="62.5" x2="475" y2="62.5" />
+                  <line x1="60" y1="100" x2="475" y2="100" stroke="#fca5a5" stroke-dasharray="4" />
+                  <line x1="60" y1="137.5" x2="475" y2="137.5" />
+                  <line x1="60" y1="175" x2="475" y2="175" />
+                </g>
+                <g class="axis-labels" fill="#64748b" font-size="12">
+                  <text x="50" y="30" text-anchor="end" fill="#dc2626" font-weight="700">11</text>
+                  <text x="50" y="67" text-anchor="end">8.2</text>
+                  <text x="50" y="105" text-anchor="end" fill="#dc2626" font-weight="700">5.5</text>
+                  <text x="50" y="142" text-anchor="end">2.7</text>
+                  <text x="50" y="180" text-anchor="end">0</text>
+                  <text class="time-label" x="60" y="202" text-anchor="start" font-size="11">--:--:--</text>
+                  <text class="time-label" x="267" y="202" text-anchor="middle" font-size="11">--:--:--</text>
+                  <text class="time-label" x="475" y="202" text-anchor="end" font-size="11">--:--:--</text>
+                </g>
+                <path class="chart-line env-chart-line-cb1" stroke="#dc2626" stroke-width="2.8" fill="none"></path>
+              </svg>
+            </div>
+          </section>
+
+          <!-- BIỂU ĐỒ 2: CHẤT LƯỢNG KHÔNG KHÍ -->
+          <section class="env-chart-card">
+            <div class="card-head">
+              <h2 style="color: #0891b2;">Bi&#7875;u &#273;&#7891; CB2 (0 - 101)</h2>
+              <span class="card-tag" style="background: #e0f2fe; color: #0284c7;">0 - 101</span>
+            </div>
+            <div class="env-chart-wrap">
+              <svg class="chart-svg-cb2" viewBox="0 0 500 220" role="img" aria-label="Chart CB2">
+                <g class="grid-lines" stroke="#e2e8f0" stroke-width="1.2">
+                  <line x1="60" y1="25" x2="475" y2="25" />
+                  <line x1="60" y1="62.5" x2="475" y2="62.5" />
+                  <line x1="60" y1="100" x2="475" y2="100" stroke="#7dd3fc" stroke-dasharray="4" />
+                  <line x1="60" y1="137.5" x2="475" y2="137.5" />
+                  <line x1="60" y1="175" x2="475" y2="175" />
+                </g>
+                <g class="axis-labels" fill="#64748b" font-size="12">
+                  <text x="50" y="30" text-anchor="end" fill="#0891b2" font-weight="700">101</text>
+                  <text x="50" y="67" text-anchor="end">75</text>
+                  <text x="50" y="105" text-anchor="end" fill="#0891b2" font-weight="700">50.5</text>
+                  <text x="50" y="142" text-anchor="end">25</text>
+                  <text x="50" y="180" text-anchor="end">0</text>
+                  <text class="time-label" x="60" y="202" text-anchor="start" font-size="11">--:--:--</text>
+                  <text class="time-label" x="267" y="202" text-anchor="middle" font-size="11">--:--:--</text>
+                  <text class="time-label" x="475" y="202" text-anchor="end" font-size="11">--:--:--</text>
+                </g>
+                <path class="chart-line env-chart-line-cb2" stroke="#0891b2" stroke-width="2.8" fill="none"></path>
+              </svg>
+            </div>
+          </section>
+
+          <!-- BIỂU ĐỒ 3: ÁP SUẤT KHÍ QUYỂN -->
+          <section class="env-chart-card">
+            <div class="card-head">
+              <h2 style="color: #d97706;">Bi&#7875;u &#273;&#7891; CB3 (0 - 1001)</h2>
+              <span class="card-tag" style="background: #fef3c7; color: #b45309;">0 - 1001</span>
+            </div>
+            <div class="env-chart-wrap">
+              <svg class="chart-svg-cb3" viewBox="0 0 500 220" role="img" aria-label="Chart CB3">
+                <g class="grid-lines" stroke="#e2e8f0" stroke-width="1.2">
+                  <line x1="60" y1="25" x2="475" y2="25" />
+                  <line x1="60" y1="62.5" x2="475" y2="62.5" />
+                  <line x1="60" y1="100" x2="475" y2="100" stroke="#fcd34d" stroke-dasharray="4" />
+                  <line x1="60" y1="137.5" x2="475" y2="137.5" />
+                  <line x1="60" y1="175" x2="475" y2="175" />
+                </g>
+                <g class="axis-labels" fill="#64748b" font-size="12">
+                  <text x="50" y="30" text-anchor="end" fill="#d97706" font-weight="700">1001</text>
+                  <text x="50" y="67" text-anchor="end">750</text>
+                  <text x="50" y="105" text-anchor="end" fill="#d97706" font-weight="700">500.5</text>
+                  <text x="50" y="142" text-anchor="end">250</text>
+                  <text x="50" y="180" text-anchor="end">0</text>
+                  <text class="time-label" x="60" y="202" text-anchor="start" font-size="11">--:--:--</text>
+                  <text class="time-label" x="267" y="202" text-anchor="middle" font-size="11">--:--:--</text>
+                  <text class="time-label" x="475" y="202" text-anchor="end" font-size="11">--:--:--</text>
+                </g>
+                <path class="chart-line env-chart-line-cb3" stroke="#d97706" stroke-width="2.8" fill="none"></path>
+              </svg>
+            </div>
+          </section>
+        </div>
+
+        <!-- 3. KHỐI HIỂN THỊ DỮ LIỆU LED ĐANG VƯỢT NGƯỠNG VÀ SÁNG (ĐÃ ĐƯA XUỐNG DƯỚI CÙNG) -->
+        <section class="led-status-strip">
+          <div class="led-card" id="led-card-1">
+            <div class="led-bulb"></div>
+            <div class="led-info">
+              <strong>LED CB1 (D8)</strong>
+              <span id="led-text-1">OFF</span>
+            </div>
+          </div>
+          <div class="led-card" id="led-card-2">
+            <div class="led-bulb"></div>
+            <div class="led-info">
+              <strong>LED CB2 (D7)</strong>
+              <span id="led-text-2">OFF</span>
+            </div>
+          </div>
+          <div class="led-card" id="led-card-3">
+            <div class="led-bulb"></div>
+            <div class="led-info">
+              <strong>LED CB3 (D3)</strong>
+              <span id="led-text-3">OFF</span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <span>
+          Sensor Monitor · Environment Monitoring
+        </span>
+        <span>
+          Học viện Công nghệ Bưu chính Viễn thông
+        </span>
+      </footer>
+    </div>
+    <script src="js/auth-ui.js" defer></script>
+  </body>
+</html>

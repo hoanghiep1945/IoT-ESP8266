@@ -1,0 +1,9 @@
+.env
+data.json
+sensors.sqlite-wal
+sensors.sqlite-shm
+sensors.sqlite
+data.sqlite
+data.sqlite-shm
+data.sqlite-wal
+node_modules/
